@@ -1,0 +1,5 @@
+execute at this order
+
+`xhost +` to enable for root
+`sudo sh setup-br0.sh` to create br0 and masquerade firewall rules
+`sudo ./start-ipmi-sim.sh` to start ipmi_sim and headnode VM
