@@ -1,6 +1,9 @@
 ip link add name br0 type bridge
 ip link set br0 up
 ip addr add 192.168.123.1/24 dev br0
+
+# Enable LLDP: https://thenetworkway.wordpress.com/2016/01/04/lldp-traffic-and-linux-bridges/
+echo 16384 > /sys/class/net/br0/bridge/group_fwd_mask
 # Not working 
 # firewall-cmd --zone=external --add-masquerade --permanent
 # firewall-cmd --reload

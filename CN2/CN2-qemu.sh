@@ -10,4 +10,5 @@ DISPLAY=:0 qemu-system-x86_64 \
   -chardev socket,id=ipmi0,host=localhost,port=9202,reconnect=10 \
   -device ipmi-bmc-extern,id=bmc0,chardev=ipmi0 \
   -device isa-ipmi-bt,bmc=bmc0 \
-  -serial mon:telnet::9203,server,telnet,nowait
+  -serial mon:telnet::9203,server,telnet,nowait \
+  -uuid 926936a9-1cf5-4030-a7f2-8d19085a08db
