@@ -1,3 +1,4 @@
+#!/bin/bash
 ip link add name br0 type bridge
 ip link set br0 up
 ip addr add 192.168.123.1/24 dev br0
