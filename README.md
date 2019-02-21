@@ -29,13 +29,25 @@ this file and replace `wlp0s20u1` by your network interface.
 
 PS: I stopped firewalld here!!!
 
-# Istalling Head node operating system
+# sudo and xhost
+
+QEMU machines are running as root, but need X access, I run `xhost +` to make sure that graphical
+commands get access to X.
+
+`xhost +` is NOT SAFE AT ALL! Just warning :)
+
+`ipmisim` commands need root permission for opening 623 port too.
+
+# Installing Head node operating system
 
 Create the Head node disk, this is hardcoded at `HN/HN-qemu.sh`, just run `qemu-img create -f qcow2 HN/HN.qcow2 40G`
 
 At `HN/HN-qemu.sh` there is a comment at top of the file for installing the OS, download a ISO image, (I was using Centos7.5 x86_64)
 and create a link named `iso` in `HN/` pointing to the ISO, or edit the command line.
-Run the commented qemu command and it should start QEMU booting the ISO image, just install the image and follow up.
+Run the commented qemu command and it should start QEMU booting the ISO image, just install the operating system.
+
+After the installation finishes, power off the machine and start it with `cd HN/; sudo ./start-ipmi-sim.sh`. This will start
+the Head node machine.
 
 # Create the computing nodes
 
@@ -125,6 +137,15 @@ between QEMU and ipmisim for SoL to work. To get login working with this you nee
 
 So, summing up xCAT configuration (BCM IP), CNx-qemu.sh and lan.conf are closed tied together. If everything is lined up
 you should be able to discovery computing nodes and use rpower and rcons commands.
+
+# The scripts
+
+* `start-all.sh` should start everything once everything is created
+* `setup-br0.sh` will setup network, run only once for each host reboot.
+* `start-ipmi-sim.sh` will start the `ipmisim` process. If `startnow true` is in `lan.conf` file, the respective virtual machine will start too.
+* `CNn-qemu.sh` and `HN-qemu.sh` these are invoked by `ipmisim` process and start the virtual machines.
+* `qemu-ifup.sh` this will create tap interfaces and attach it to `br0`, invoked by qemu automatically
+* `ipmi_sim_lancontrol` (at `scripts`) this is invoked by `ipmisim` when BCM network configuration is changed
 
 # Anything missing?
 If there are any missing bits, please let me know, I'll be glad to share any xCAT configuration that I have here. 
