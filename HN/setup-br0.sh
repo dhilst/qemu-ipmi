@@ -1,15 +1,23 @@
 #!/bin/bash
-ip link add name br0 type bridge
-ip link set br0 up
-ip addr add 192.168.123.1/24 dev br0
+
+: ${BR:=br0}
+: ${IP:=192.168.123.1/24}
+: ${WLAN:=wlp9s0f3u2}
+: ${TAP:=tap0}
+
+
+
+ip link add name $BR type bridge
+ip link set $BR up
+ip addr add $IP dev $BR
 
 # Not working 
 # firewall-cmd --zone=external --add-masquerade --permanent
 # firewall-cmd --reload
 #
 systemctl stop firewalld
-iptables -t nat -A POSTROUTING -o wlp0s20u2 -j MASQUERADE
-iptables -A FORWARD -i tap0 -o wlp0s20u2 -j ACCEPT
+iptables -t nat -A POSTROUTING -o $WLAN -j MASQUERADE
+iptables -A FORWARD -i $TAP -o $WLAN -j ACCEPT
 sysctl net.ipv4.ip_forward=1
 
 ## on the vm
